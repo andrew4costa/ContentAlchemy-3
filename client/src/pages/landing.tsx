@@ -22,7 +22,6 @@ import {
   Star, 
   Tag, 
   Users, 
-  Twitter, 
   Linkedin, 
   Instagram,
   Play
@@ -85,7 +84,7 @@ export default function Landing() {
                 Into Viral Social Posts
               </h1>
               <p className="text-xl lg:text-2xl mb-8 leading-relaxed text-[#f0b111]">
-                AI-powered repurposing tool that transforms your videos, podcasts, and articles into engaging LinkedIn posts, Instagram Reels, Tweets, and TikToks—all in one click.
+                AI-powered repurposing tool that transforms your videos, podcasts, and articles into engaging LinkedIn posts, Instagram Reels, X posts, and TikToks—all in one click.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
                 <Button 
@@ -213,7 +212,7 @@ export default function Landing() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-slate-800 mb-2">3. Get Multi-Platform Posts</h3>
-                  <p className="text-slate-600">Receive professional LinkedIn posts, viral TikTok scripts, engaging Tweets, and Instagram captions—all ready to publish.</p>
+                  <p className="text-slate-600">Receive professional LinkedIn posts, viral TikTok scripts, engaging X posts, and Instagram captions—all ready to publish.</p>
                 </div>
               </div>
             </div>
@@ -251,7 +250,7 @@ export default function Landing() {
                   </div>
                   <div className="flex items-center text-sm text-slate-600">
                     <Check className="text-purple-600 mr-3 h-4 w-4" />
-                    <span>Tweet threads with key insights</span>
+                    <span>X threads with key insights</span>
                   </div>
                 </div>
                 <div className="mt-6">
@@ -309,7 +308,7 @@ export default function Landing() {
                   </div>
                   <div className="flex items-center text-sm text-slate-600">
                     <Check className="text-blue-600 mr-3 h-4 w-4" />
-                    <span>Behind-the-scenes Twitter content</span>
+                    <span>Behind-the-scenes X content</span>
                   </div>
                   <div className="flex items-center text-sm text-slate-600">
                     <Check className="text-blue-600 mr-3 h-4 w-4" />
@@ -384,14 +383,14 @@ export default function Landing() {
                 <Card className="shadow-md border-slate-200">
                   <CardContent className="p-4">
                     <div className="flex items-center mb-3">
-                      <Twitter className="text-blue-400 text-lg mr-2" />
+                      <X className="text-blue-400 text-lg mr-2" />
                       <span className="font-medium text-slate-700">X Thread</span>
                       <span className="ml-auto bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded">Conversational</span>
                     </div>
                     <p className="text-sm text-slate-600">
                       "My first startup failed spectacularly. Here's the 3-step framework that turned that failure into my biggest advantage: 🧵"
                     </p>
-                    <p className="text-xs text-slate-500 mt-2">+ 6 more tweets in thread</p>
+                    <p className="text-xs text-slate-500 mt-2">+ 6 more posts in thread</p>
                   </CardContent>
                 </Card>
 
@@ -656,7 +655,7 @@ export default function Landing() {
               </p>
               <div className="flex space-x-4">
                 <a href="#" className="text-slate-400 hover:text-white transition-colors">
-                  <Twitter className="text-xl" />
+                  <X className="text-xl" />
                 </a>
                 <a href="#" className="text-slate-400 hover:text-white transition-colors">
                   <Linkedin className="text-xl" />
