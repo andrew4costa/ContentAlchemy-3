@@ -4,6 +4,7 @@ import { Pool, neonConfig } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-serverless';
 import ws from "ws";
 import { eq } from "drizzle-orm";
+import { Resend } from 'resend';
 import * as schema from "./schema";
 import { waitlistSignups, insertWaitlistSignupSchema } from "./schema";
 
@@ -15,6 +16,8 @@ if (!process.env.DATABASE_URL) {
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const db = drizzle({ client: pool, schema });
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Enable CORS
@@ -46,6 +49,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .insert(waitlistSignups)
         .values(validatedData)
         .returning();
+
+      // Send welcome email
+      try {
+        await resend.emails.send({
+          from: 'ContentAlchemy <noreply@contentalchemy.co>',
+          to: [newSignup.email],
+          subject: 'You\'re on the ContentAlchemy waitlist! 🎉',
+          html: `
+            <h1>Thanks for joining the waitlist! 🚀</h1>
+            <p>Hi ${newSignup.name},</p>
+            <p>Thank you for joining the ContentAlchemy waitlist. You'll receive updates about our progress and be the first to know when we launch. 📧</p>
+            <p>Stay tuned! ✨</p>
+            <p>Best,<br>The ContentAlchemy Team</p>
+          `
+        });
+      } catch (emailError) {
+        console.error('Failed to send welcome email:', emailError);
+        // Don't fail the signup if email fails
+      }
 
       return res.status(201).json(newSignup);
     } catch (error) {
