@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 
 export default function Landing() {
-  const { data: waitlistCount } = useQuery({
+  const { data: waitlistCount } = useQuery<{ count: number }>({
     queryKey: ["/api/waitlist/count"],
   });
 
@@ -58,7 +58,6 @@ export default function Landing() {
               <div className="ml-10 flex items-baseline space-x-8">
                 <a href="#features" className="text-slate-600 hover:text-brand-blue px-3 py-2 text-sm font-medium transition-colors">Features</a>
                 <a href="#use-cases" className="text-slate-600 hover:text-brand-blue px-3 py-2 text-sm font-medium transition-colors">Use Cases</a>
-                <a href="#waitlist" className="text-slate-600 hover:text-brand-blue px-3 py-2 text-sm font-medium transition-colors">Early Access</a>
                 <Button 
                   onClick={scrollToWaitlist}
                   className="bg-brand-blue hover:bg-brand-blue-dark text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 transform hover:scale-105"
@@ -505,7 +504,7 @@ export default function Landing() {
               <div className="text-slate-600">Launch Discount</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-brand-blue mb-2">Q1 2025</div>
+              <div className="text-3xl font-bold text-brand-blue mb-2">Q3 2025</div>
               <div className="text-slate-600">Expected Launch</div>
             </div>
           </div>
