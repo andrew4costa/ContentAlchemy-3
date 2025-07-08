@@ -71,7 +71,6 @@ export default function Landing() {
           </div>
         </div>
       </nav>
-
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-brand-blue to-brand-blue-dark overflow-hidden">
         <div className="absolute inset-0 bg-black opacity-10"></div>
@@ -99,7 +98,7 @@ export default function Landing() {
               </div>
               <div className="flex items-center justify-center lg:justify-start text-blue-200 text-sm">
                 <Check className="mr-2 h-4 w-4" />
-                <span>No technical setup required • Context-aware AI • Multi-platform ready</span>
+                <span className="text-[#f0b111]">No technical setup required • Context-aware AI • Multi-platform ready</span>
               </div>
             </div>
             <div className="relative">
@@ -120,7 +119,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       {/* Problem Statement */}
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -166,7 +164,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       {/* Solution Preview */}
       <section className="py-20 bg-gradient-to-r from-slate-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -223,7 +220,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       {/* Use Cases */}
       <section id="use-cases" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -332,7 +328,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       {/* Platform Examples */}
       <section className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -390,7 +385,7 @@ export default function Landing() {
                   <CardContent className="p-4">
                     <div className="flex items-center mb-3">
                       <Twitter className="text-blue-400 text-lg mr-2" />
-                      <span className="font-medium text-slate-700">Twitter Thread</span>
+                      <span className="font-medium text-slate-700">X Thread</span>
                       <span className="ml-auto bg-blue-100 text-blue-600 text-xs px-2 py-1 rounded">Conversational</span>
                     </div>
                     <p className="text-sm text-slate-600">
@@ -418,7 +413,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       {/* Features */}
       <section id="features" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -494,7 +488,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       {/* Comparison */}
       <section id="pricing" className="py-20 bg-slate-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -591,7 +584,6 @@ export default function Landing() {
           </Card>
         </div>
       </section>
-
       {/* Waitlist Section */}
       <section id="waitlist" className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -650,7 +642,6 @@ export default function Landing() {
           </Card>
         </div>
       </section>
-
       {/* Footer */}
       <footer className="bg-slate-800 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
