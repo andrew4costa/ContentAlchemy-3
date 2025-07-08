@@ -1,9 +1,11 @@
 services:
   - type: web
     name: contentflow-waitlist
-    env: node
-    buildCommand: npm install && npm run build
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
     startCommand: npm start
+    healthCheckPath: /
     envVars:
       - key: NODE_ENV
         value: production
@@ -11,8 +13,17 @@ services:
         fromDatabase:
           name: contentflow-db
           property: connectionString
-    
+    buildFilter:
+      paths:
+      - package.json
+      - package-lock.json
+      - client/**
+      - server/**
+      - shared/**
+      - vite.config.ts
+      - tailwind.config.ts
+      - tsconfig.json
+
 databases:
   - name: contentflow-db
     databaseName: contentflow
-    user: contentflow
