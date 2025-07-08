@@ -11,7 +11,8 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": false,
     "declaration": false,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "allowImportingTsExtensions": false
   },
   "include": [
     "**/*.ts",
