@@ -2,6 +2,8 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 import { Pool, neonConfig } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-serverless';
 import ws from "ws";
+import * as schema from "../schema";
+import { waitlistSignups } from "../schema";
 
 neonConfig.webSocketConstructor = ws;
 
@@ -10,11 +12,9 @@ if (!process.env.DATABASE_URL) {
 }
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const db = drizzle({ client: pool, schema });
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const schema = await import("../../shared/schema");
-  const { waitlistSignups } = schema;
-  const db = drizzle({ client: pool, schema });
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }

@@ -3,6 +3,8 @@ import { Pool, neonConfig } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-serverless';
 import ws from "ws";
 import { count } from "drizzle-orm";
+import * as schema from "../schema";
+import { waitlistSignups } from "../schema";
 
 neonConfig.webSocketConstructor = ws;
 
@@ -11,11 +13,9 @@ if (!process.env.DATABASE_URL) {
 }
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const db = drizzle({ client: pool, schema });
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const schema = await import("../../shared/schema");
-  const { waitlistSignups } = schema;
-  const db = drizzle({ client: pool, schema });
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
