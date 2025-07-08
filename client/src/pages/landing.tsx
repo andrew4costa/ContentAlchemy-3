@@ -58,7 +58,7 @@ export default function Landing() {
               <div className="ml-10 flex items-baseline space-x-8">
                 <a href="#features" className="text-slate-600 hover:text-brand-blue px-3 py-2 text-sm font-medium transition-colors">Features</a>
                 <a href="#use-cases" className="text-slate-600 hover:text-brand-blue px-3 py-2 text-sm font-medium transition-colors">Use Cases</a>
-                <a href="#pricing" className="text-slate-600 hover:text-brand-blue px-3 py-2 text-sm font-medium transition-colors">Pricing</a>
+                <a href="#waitlist" className="text-slate-600 hover:text-brand-blue px-3 py-2 text-sm font-medium transition-colors">Join Waitlist</a>
                 <Button 
                   onClick={scrollToWaitlist}
                   className="bg-brand-blue hover:bg-brand-blue-dark text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 transform hover:scale-105"
@@ -575,7 +575,7 @@ export default function Landing() {
               <ul className="space-y-2 text-slate-300">
                 <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
                 <li><a href="#use-cases" className="hover:text-white transition-colors">Use Cases</a></li>
-                <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
+                <li><a href="#waitlist" className="hover:text-white transition-colors">Join Waitlist</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Roadmap</a></li>
               </ul>
             </div>
