@@ -1,4 +1,6 @@
 import { users, waitlistSignups, type User, type InsertUser, type WaitlistSignup, type InsertWaitlistSignup } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -9,65 +11,48 @@ export interface IStorage {
   getWaitlistSignupByEmail(email: string): Promise<WaitlistSignup | undefined>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private waitlistSignups: Map<number, WaitlistSignup>;
-  private waitlistEmailIndex: Map<string, number>;
-  currentUserId: number;
-  currentWaitlistId: number;
-
-  constructor() {
-    this.users = new Map();
-    this.waitlistSignups = new Map();
-    this.waitlistEmailIndex = new Map();
-    this.currentUserId = 1;
-    this.currentWaitlistId = 1;
-  }
-
+export class DatabaseStorage implements IStorage {
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.currentUserId++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
     return user;
   }
 
   async createWaitlistSignup(insertSignup: InsertWaitlistSignup): Promise<WaitlistSignup> {
-    // Check if email already exists
-    if (this.waitlistEmailIndex.has(insertSignup.email)) {
-      throw new Error("Email already exists on waitlist");
+    try {
+      const [signup] = await db
+        .insert(waitlistSignups)
+        .values(insertSignup)
+        .returning();
+      return signup;
+    } catch (error: any) {
+      if (error.code === '23505' || error.message?.includes('duplicate key')) {
+        throw new Error("Email already exists on waitlist");
+      }
+      throw error;
     }
-
-    const id = this.currentWaitlistId++;
-    const signup: WaitlistSignup = { 
-      ...insertSignup, 
-      id,
-      createdAt: new Date()
-    };
-    
-    this.waitlistSignups.set(id, signup);
-    this.waitlistEmailIndex.set(insertSignup.email, id);
-    return signup;
   }
 
   async getWaitlistSignups(): Promise<WaitlistSignup[]> {
-    return Array.from(this.waitlistSignups.values());
+    return await db.select().from(waitlistSignups);
   }
 
   async getWaitlistSignupByEmail(email: string): Promise<WaitlistSignup | undefined> {
-    const id = this.waitlistEmailIndex.get(email);
-    if (!id) return undefined;
-    return this.waitlistSignups.get(id);
+    const [signup] = await db.select().from(waitlistSignups).where(eq(waitlistSignups.email, email));
+    return signup || undefined;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();

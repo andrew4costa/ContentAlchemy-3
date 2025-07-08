@@ -85,7 +85,7 @@ export default function Landing() {
                 </span>
                 Into Viral Social Posts
               </h1>
-              <p className="text-xl lg:text-2xl text-white mb-8 leading-relaxed">
+              <p className="text-xl lg:text-2xl mb-8 leading-relaxed text-[#f0b111]">
                 AI-powered repurposing tool that transforms your videos, podcasts, and articles into engaging LinkedIn posts, Instagram Reels, Tweets, and TikToks—all in one click.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
