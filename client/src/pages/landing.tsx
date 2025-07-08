@@ -85,7 +85,7 @@ export default function Landing() {
                 </span>
                 Into Viral Social Posts
               </h1>
-              <p className="text-xl lg:text-2xl text-blue-100 mb-8 leading-relaxed">
+              <p className="text-xl lg:text-2xl text-white mb-8 leading-relaxed">
                 AI-powered repurposing tool that transforms your videos, podcasts, and articles into engaging LinkedIn posts, Instagram Reels, Tweets, and TikToks—all in one click.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
@@ -95,13 +95,6 @@ export default function Landing() {
                 >
                   <Rocket className="mr-2" />
                   Get Early Access
-                </Button>
-                <Button 
-                  variant="outline"
-                  className="border-2 border-white text-white hover:bg-white hover:text-brand-blue px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-200"
-                >
-                  <Play className="mr-2" />
-                  Watch Demo
                 </Button>
               </div>
               <div className="flex items-center justify-center lg:justify-start text-blue-200 text-sm">
