@@ -1,0 +1,7 @@
+server/
+render.yaml
+replit.md
+.replit
+node_modules/
+.env
+*.log
