@@ -106,14 +106,7 @@ export default function Landing() {
                 alt="Content creator working at modern computer setup" 
                 className="rounded-2xl shadow-2xl w-full h-auto" 
               />
-              <Card className="absolute -bottom-6 -left-6 p-4 shadow-xl">
-                <CardContent className="p-0">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-brand-green rounded-full animate-pulse"></div>
-                    <span className="text-sm font-semibold text-slate-700">AI Processing...</span>
-                  </div>
-                </CardContent>
-              </Card>
+              
             </div>
           </div>
         </div>
