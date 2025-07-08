@@ -19,6 +19,10 @@ const db = drizzle({ client: pool, schema });
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+if (!process.env.RESEND_API_KEY) {
+  console.warn('RESEND_API_KEY not set - emails will not be sent');
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -31,6 +35,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (req.method === 'POST') {
     try {
+      console.log('Received signup data:', req.body);
       const validatedData = insertWaitlistSignupSchema.parse(req.body);
       
       // Check if email already exists
@@ -40,6 +45,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .where(eq(waitlistSignups.email, validatedData.email));
 
       if (existingSignup) {
+        console.log('Duplicate email attempt:', validatedData.email);
         return res.status(400).json({ 
           error: "This email is already on the waitlist" 
         });
@@ -52,8 +58,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       // Send welcome email
       try {
-        await resend.emails.send({
-          from: 'ContentAlchemy <noreply@contentalchemy.co>',
+        if (!process.env.RESEND_API_KEY) {
+          console.warn('RESEND_API_KEY not set - skipping email');
+        } else {
+          console.log('Sending welcome email to:', newSignup.email);
+        }
+        
+        const emailResult = await resend.emails.send({
+          from: 'ContentAlchemy <noreply@resend.dev>',
           to: [newSignup.email],
           subject: 'You\'re on the ContentAlchemy waitlist! 🎉',
           html: `
@@ -64,6 +76,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             <p>Best,<br>The ContentAlchemy Team</p>
           `
         });
+        
+        console.log('Email sent successfully:', emailResult);
       } catch (emailError) {
         console.error('Failed to send welcome email:', emailError);
         // Don't fail the signup if email fails
@@ -73,6 +87,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     } catch (error) {
       console.error('Error creating waitlist signup:', error);
       if (error instanceof z.ZodError) {
+        console.log('Zod validation error:', error.errors);
         return res.status(400).json({ 
           error: "Invalid data", 
           details: error.errors 
