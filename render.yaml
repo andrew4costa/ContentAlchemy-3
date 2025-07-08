@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: contentflow-waitlist
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: contentflow-db
+          property: connectionString
+    
+databases:
+  - name: contentflow-db
+    databaseName: contentflow
+    user: contentflow
