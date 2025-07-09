@@ -4,8 +4,6 @@ import { Pool, neonConfig } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-serverless';
 import ws from "ws";
 import { eq } from "drizzle-orm";
-// @ts-ignore
-import mailchimp from '@mailchimp/mailchimp_marketing';
 import * as schema from "./schema";
 import { waitlistSignups, insertWaitlistSignupSchema } from "./schema";
 
@@ -18,13 +16,8 @@ if (!process.env.DATABASE_URL) {
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const db = drizzle({ client: pool, schema });
 
-if (process.env.MAILCHIMP_API_KEY && process.env.MAILCHIMP_SERVER_PREFIX) {
-  mailchimp.setConfig({
-    apiKey: process.env.MAILCHIMP_API_KEY,
-    server: process.env.MAILCHIMP_SERVER_PREFIX,
-  });
-} else {
-  console.warn('MAILCHIMP_API_KEY or MAILCHIMP_SERVER_PREFIX not set - list additions will not work');
+if (!process.env.BEEHIIV_API_KEY || !process.env.BEEHIIV_PUBLICATION_ID) {
+  console.warn('BEEHIIV_API_KEY or BEEHIIV_PUBLICATION_ID not set - subscribers will not be added to newsletter');
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -60,27 +53,44 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .values(validatedData)
         .returning();
 
-      // Add to Mailchimp list
+      // Add to Beehiiv newsletter
       try {
-        if (!process.env.MAILCHIMP_API_KEY || !process.env.MAILCHIMP_SERVER_PREFIX || !process.env.MAILCHIMP_LIST_ID) {
-          console.warn('Mailchimp not configured - skipping list addition');
+        if (!process.env.BEEHIIV_API_KEY || !process.env.BEEHIIV_PUBLICATION_ID) {
+          console.warn('Beehiiv not configured - skipping newsletter addition');
         } else {
-          console.log('Adding to Mailchimp list:', newSignup.email);
+          console.log('Adding to Beehiiv newsletter:', newSignup.email);
           
-          const response = await mailchimp.lists.addListMember(process.env.MAILCHIMP_LIST_ID, {
-            email_address: newSignup.email,
-            status: 'subscribed',
-            merge_fields: {
-              FNAME: newSignup.name,
-              CTYPE: newSignup.creatorType
-            }
+          const beehiivResponse = await fetch(`https://api.beehiiv.com/v2/publications/${process.env.BEEHIIV_PUBLICATION_ID}/subscriptions`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${process.env.BEEHIIV_API_KEY}`
+            },
+            body: JSON.stringify({
+              email: newSignup.email,
+              reactivate_existing: true,
+              send_welcome_email: true,
+              utm_source: 'website',
+              utm_campaign: 'waitlist',
+              utm_medium: 'form',
+              referring_site: 'contentalchemy.co',
+              custom_fields: {
+                name: newSignup.name,
+                creator_type: newSignup.creatorType
+              }
+            })
           });
           
-          console.log('Added to Mailchimp list successfully:', response.id);
+          if (beehiivResponse.ok) {
+            const result = await beehiivResponse.json();
+            console.log('Added to Beehiiv newsletter successfully:', result.id);
+          } else {
+            console.error('Beehiiv API error:', beehiivResponse.status, await beehiivResponse.text());
+          }
         }
-      } catch (mailchimpError) {
-        console.error('Failed to add to Mailchimp list:', mailchimpError);
-        // Don't fail the signup if Mailchimp fails
+      } catch (beehiivError) {
+        console.error('Failed to add to Beehiiv newsletter:', beehiivError);
+        // Don't fail the signup if Beehiiv fails
       }
 
       return res.status(201).json(newSignup);
