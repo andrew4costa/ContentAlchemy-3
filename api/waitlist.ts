@@ -4,7 +4,8 @@ import { Pool, neonConfig } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-serverless';
 import ws from "ws";
 import { eq } from "drizzle-orm";
-import { Resend } from 'resend';
+// @ts-ignore
+import mailchimp from '@mailchimp/mailchimp_marketing';
 import * as schema from "./schema";
 import { waitlistSignups, insertWaitlistSignupSchema } from "./schema";
 
@@ -17,10 +18,13 @@ if (!process.env.DATABASE_URL) {
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const db = drizzle({ client: pool, schema });
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-if (!process.env.RESEND_API_KEY) {
-  console.warn('RESEND_API_KEY not set - emails will not be sent');
+if (process.env.MAILCHIMP_API_KEY && process.env.MAILCHIMP_SERVER_PREFIX) {
+  mailchimp.setConfig({
+    apiKey: process.env.MAILCHIMP_API_KEY,
+    server: process.env.MAILCHIMP_SERVER_PREFIX,
+  });
+} else {
+  console.warn('MAILCHIMP_API_KEY or MAILCHIMP_SERVER_PREFIX not set - list additions will not work');
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -56,31 +60,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         .values(validatedData)
         .returning();
 
-      // Send welcome email
+      // Add to Mailchimp list
       try {
-        if (!process.env.RESEND_API_KEY) {
-          console.warn('RESEND_API_KEY not set - skipping email');
+        if (!process.env.MAILCHIMP_API_KEY || !process.env.MAILCHIMP_SERVER_PREFIX || !process.env.MAILCHIMP_LIST_ID) {
+          console.warn('Mailchimp not configured - skipping list addition');
         } else {
-          console.log('Sending welcome email to:', newSignup.email);
+          console.log('Adding to Mailchimp list:', newSignup.email);
+          
+          const response = await mailchimp.lists.addListMember(process.env.MAILCHIMP_LIST_ID, {
+            email_address: newSignup.email,
+            status: 'subscribed',
+            merge_fields: {
+              FNAME: newSignup.name,
+              CTYPE: newSignup.creatorType
+            }
+          });
+          
+          console.log('Added to Mailchimp list successfully:', response.id);
         }
-        
-        const emailResult = await resend.emails.send({
-          from: 'ContentAlchemy <noreply@resend.dev>',
-          to: [newSignup.email],
-          subject: 'You\'re on the ContentAlchemy waitlist! 🎉',
-          html: `
-            <h1>Thanks for joining the waitlist! 🚀</h1>
-            <p>Hi ${newSignup.name},</p>
-            <p>Thank you for joining the ContentAlchemy waitlist. You'll receive updates about our progress and be the first to know when we launch. 📧</p>
-            <p>Stay tuned! ✨</p>
-            <p>Best,<br>The ContentAlchemy Team</p>
-          `
-        });
-        
-        console.log('Email sent successfully:', emailResult);
-      } catch (emailError) {
-        console.error('Failed to send welcome email:', emailError);
-        // Don't fail the signup if email fails
+      } catch (mailchimpError) {
+        console.error('Failed to add to Mailchimp list:', mailchimpError);
+        // Don't fail the signup if Mailchimp fails
       }
 
       return res.status(201).json(newSignup);
