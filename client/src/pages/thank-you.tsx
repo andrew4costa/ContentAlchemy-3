@@ -13,7 +13,7 @@ export default function ThankYou() {
           </div>
           
           <h1 className="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
-            Welcome to the ContentFlow AI Waitlist!
+            Welcome to the ReSynq Waitlist!
           </h1>
           
           <p className="text-xl text-slate-600 mb-8 leading-relaxed">
@@ -94,8 +94,8 @@ export default function ThankYou() {
               onClick={() => {
                 if (navigator.share) {
                   navigator.share({
-                    title: 'ContentFlow AI - AI-Powered Content Repurposing',
-                    text: 'Check out ContentFlow AI - turn your long-form content into viral social posts with one click!',
+                    title: 'ReSynq - AI-Powered Content Repurposing',
+                    text: 'Check out ReSynq - turn your long-form content into viral social posts with one click!',
                     url: window.location.origin,
                   });
                 } else {
@@ -110,7 +110,7 @@ export default function ThankYou() {
           </div>
 
           <p className="text-sm text-slate-500 mt-8">
-            Have questions? Reply to our welcome email or reach out at hello@contentflow.ai
+            Have questions? Reply to our welcome email or reach out at hello@resynq.co
           </p>
         </CardContent>
       </Card>

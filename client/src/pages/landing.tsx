@@ -51,7 +51,7 @@ export default function Landing() {
             <div className="flex items-center">
               <div className="flex-shrink-0 flex items-center">
                 <WandSparkles className="text-2xl text-brand-blue mr-3" />
-                <span className="text-xl font-bold text-slate-800">ContentFlow AI</span>
+                <span className="text-xl font-bold text-slate-800">ReSynq</span>
               </div>
             </div>
             <div className="hidden md:block">
@@ -164,7 +164,7 @@ export default function Landing() {
               <span className="text-brand-blue">Zero Hassle.</span>
             </h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-              ContentFlow AI analyzes your content's context and automatically creates platform-optimized posts that match each platform's unique style and audience.
+              ReSynq analyzes your content's context and automatically creates platform-optimized posts that match each platform's unique style and audience.
             </p>
           </div>
 
@@ -409,7 +409,7 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-slate-800 mb-6">
-              Why ContentFlow AI Is Different
+              Why ReSynq Is Different
             </h2>
             <p className="text-xl text-slate-600 max-w-3xl mx-auto">
               Built specifically for independent creators who need professional results without the enterprise-level complexity and cost.
@@ -545,7 +545,7 @@ export default function Landing() {
             <div className="col-span-2">
               <div className="flex items-center mb-4">
                 <WandSparkles className="text-2xl text-brand-blue mr-3" />
-                <span className="text-xl font-bold">ContentFlow AI</span>
+                <span className="text-xl font-bold">ReSynq</span>
               </div>
               <p className="text-slate-300 mb-6 max-w-md">
                 Transform your long-form content into viral social posts with AI-powered repurposing that understands context and adapts to every platform.
@@ -582,7 +582,7 @@ export default function Landing() {
             </div>
           </div>
           <div className="border-t border-slate-700 mt-8 pt-8 text-center text-slate-400">
-            <p>&copy; 2024 ContentFlow AI. All rights reserved.</p>
+                            <p>&copy; 2024 ReSynq. All rights reserved.</p>
           </div>
         </div>
       </footer>

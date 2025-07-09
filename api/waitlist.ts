@@ -73,7 +73,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               utm_source: 'website',
               utm_campaign: 'waitlist',
               utm_medium: 'form',
-              referring_site: 'contentalchemy.co',
+              referring_site: 'resynq.co',
               custom_fields: {
                 name: newSignup.name,
                 creator_type: newSignup.creatorType
