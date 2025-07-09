@@ -110,7 +110,7 @@ export default function ThankYou() {
           </div>
 
           <p className="text-sm text-slate-500 mt-8">
-            Have questions? Reply to our welcome email or reach out at hello@resynq.co
+            Have questions? Reply to our welcome email or reach out at resynqteam@gmail.com
           </p>
         </CardContent>
       </Card>
